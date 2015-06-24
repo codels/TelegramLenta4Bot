@@ -1,3 +1,4 @@
 <?php
 
 $token = 'to:ken';
+$chatId = 0;
