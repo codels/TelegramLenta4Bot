@@ -110,6 +110,7 @@ function parseItem($item)
         }
     }
 
+    $text = str_replace("<br>","\n",$text);
     return $text;
 }
 
