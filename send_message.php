@@ -47,7 +47,10 @@ foreach ($bots as &$bot) {
     $offset = $bot['last_update_id'];
     $userMsg = _request($bot['token_encrypted'], 'getUpdates', array('offset' => $offset));
     var_dump(_request($bot['token_encrypted'], 'getUpdates', array('offset' => $offset)));
-
+    if (isset($userMsg['result'][0]['message']['text'])) {
+        if ($userMsg['result'][0]['message']['text'] == '/get')
+            _request($bot['token_encrypted'], 'sendMessage', array('chat_id' => $userMsg['result'][0]['message']['chat']['id'], 'text' => parseItem(getLastItem(29534144, 1))));
+    }
     //todo: increment offset here
 }
 
@@ -98,6 +101,7 @@ function parseItem($item)
     }
 
     $item = $item['response'][1];
+    var_dump($item);
 
     $postId = $item['id'];
     $text = "Получено от: https://vk.com/oldlentach?w=wall-29534144_" . $postId . "\n\n";
