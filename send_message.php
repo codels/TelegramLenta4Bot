@@ -44,7 +44,11 @@ $statement = $db->getConnect()->query('SELECT * FROM `bots`');
 $bots = $statement->fetchAll(PDO::FETCH_ASSOC);
 foreach ($bots as &$bot) {
     $bot['token_encrypted'] = Encryption::decrypt($bot['token'], $config['secret_key']);
-    var_dump(_request($bot['token_encrypted'], 'getUpdates'));
+    $offset = $bot['last_update_id'];
+    $userMsg = _request($bot['token_encrypted'], 'getUpdates', array('offset' => $offset));
+    var_dump(_request($bot['token_encrypted'], 'getUpdates', array('offset' => $offset)));
+
+    //todo: increment offset here
 }
 
 
@@ -129,7 +133,7 @@ function parseItem($item)
             $text .= "Содержит аудиозаписи ($audio)\n";
     }
 
-    $text = str_replace("<br>", "\n", $text);
+    $text = preg_replace('/\<br(\s*)?\/?\>/i', PHP_EOL, $text);
     return $text;
 }
 

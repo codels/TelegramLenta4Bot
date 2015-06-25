@@ -25,8 +25,9 @@ if ($statementSearch->rowCount()) {
 
 $tokenCrypt = Encryption::encrypt($token, $config['secret_key']);
 
-$statement = $db->getConnect()->prepare('INSERT INTO `bots` (`bot_name`, `token`) VALUES (?, ?)');
+$statement = $db->getConnect()->prepare('INSERT INTO `bots` (`bot_name`, `token`, `last_update_id`) VALUES (?, ?, "")');
 $statement->execute(array($botName, $tokenCrypt));
+
 if ($statement->rowCount()) {
     exit('ok');
 } else {
