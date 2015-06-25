@@ -6,56 +6,26 @@ $statement = $db->getConnect()->query('SELECT * FROM `bots`');
 $bots = $statement->fetchAll(PDO::FETCH_ASSOC);
 foreach ($bots as &$bot) {
     $bot['api'] = new TelegramBotApi($bot['token'], $config);
+    if (!($bot['api'] instanceof TelegramBotApi)) {
+        continue;
+    }
+
     $offset = $bot['last_update_id'];
 
-    $userMsg = $bot['api'] instanceof TelegramBotApi ? $bot['api']->query('getUpdates', array('offset' => $offset)) : null;
+    $userMsg = $bot['api']->query('getUpdates', array('offset' => $offset));
     var_dump($userMsg);
 
     if (isset($userMsg['result'][0]['message']['text'])) {
         if ($userMsg['result'][0]['message']['text'] == '/get')
-            _request($bot['token_encrypted'], 'sendMessage', array('chat_id' => $userMsg['result'][0]['message']['chat']['id'], 'text' => parseItem(getLastItem(29534144, 1))));
+            $bot['api']->query('sendMessage', array(
+                'chat_id' => $userMsg['result'][0]['message']['chat']['id'],
+                'text' => parseItem(VKApi::getWallLastItem(29534144, 1)))
+            );
     }
     //todo: increment offset here
 }
 
 echo '<br><br>';
-//var_dump(_request($token, 'sendMessage', array('chat_id' => $chatId, 'text' => 'test message')));
-
-function getLastItem($owner, $count)
-{
-    $url = "https://api.vk.com/method/wall.get?owner_id=-$owner&count=$count";
-
-    $resource = curl_init($url);
-    curl_setopt_array($resource, array(
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_HEADER => false,
-        CURLOPT_HTTPHEADER => array(
-            'Host: api.vk.com',
-            'Content-Type: application/x-www-form-urlencoded'
-        ),
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_CONNECTTIMEOUT => 600,
-        CURLOPT_SSL_VERIFYPEER => false
-    ));
-
-    $body = curl_exec($resource);
-
-    $errorNumber = curl_errno($resource);
-    if ($errorNumber) {
-        $errorMessage = curl_error($resource);
-        error_log("error #{$errorNumber}: {$errorMessage}");
-    }
-
-    curl_close($resource);
-    if (empty($body)) {
-        return null;
-    }
-    $decodedBody = json_decode($body, true);
-    if (is_null($decodedBody) || $decodedBody === false) {
-        return null;
-    }
-    return $decodedBody;
-}
 
 function parseItem($item)
 {
