@@ -23,7 +23,7 @@ if (empty($_REQUEST['token'])) {
 $botName = $_REQUEST['bot_name'];
 $token = $_REQUEST['token'];
 
-$statementSearch = $db->prepare('SELECT 1 FROM `bots` WHERE `name` = ?');
+$statementSearch = $db->prepare('SELECT 1 FROM `bots` WHERE `bot_name` = ?');
 $statementSearch->execute(array($botName));
 if ($statementSearch->rowCount()) {
     exit('bot already exists');
