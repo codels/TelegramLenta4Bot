@@ -12,14 +12,14 @@ foreach ($bots as &$bot) {
 
     $offset = $bot['last_update_id'];
 
-    $userMsg = $bot['api']->query('getUpdates', array('offset' => $offset));
+    $userMsg = $bot['api']->getUpdates($offset);
     var_dump($userMsg);
 
     if (isset($userMsg['result'][0]['message']['text'])) {
         if ($userMsg['result'][0]['message']['text'] == '/get')
-            $bot['api']->query('sendMessage', array(
-                'chat_id' => $userMsg['result'][0]['message']['chat']['id'],
-                'text' => VKApi::getWallLastItemParsed(29534144, 1))
+            $bot['api']->sendMessage(
+                $userMsg['result'][0]['message']['chat']['id'],
+                VKApi::getWallLastItemParsed(29534144, 1)
             );
     }
     //todo: increment offset here
