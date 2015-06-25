@@ -1,4 +1,12 @@
 <?php
 
-$token = 'to:ken';
+$debug = false;
+$secretKey = 'this is secret key';
 $chatId = 0;
+
+$dataBaseType = 'mysql';
+$dataBaseHost = '127.0.0.1';
+$dataBaseUser = 'root';
+$dataBasePassword = '';
+$dataBaseBaseName = 'data_base';
+$dataBaseEncode = 'utf8';
