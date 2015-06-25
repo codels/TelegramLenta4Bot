@@ -42,8 +42,9 @@ function mc_encrypt($encrypt, $key){
 
 $tokenCrypt = mc_encrypt($token, $secretKey);
 
-$statement = $db->prepare('INSERT INTO `bots` (`bot_name`, `token`) VALUES (?, ?)');
+$statement = $db->prepare('INSERT INTO `bots` (`bot_name`, `token`, `last_update_id`) VALUES (?, ?, "")');
 $statement->execute(array($botName, $tokenCrypt));
+
 if ($statement->rowCount()) {
     exit('ok');
 } else {
