@@ -7,6 +7,7 @@ mb_internal_encoding('UTF-8');
 $isCLI = ( php_sapi_name() == 'cli' );
 if ($isCLI) {
     set_time_limit(0);
+    echo "\nstart cli mode";
 }
 
 require_once('libs/DB.php');
