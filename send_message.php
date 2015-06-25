@@ -12,7 +12,7 @@ foreach ($bots as &$bot) {
 
     $offset = $bot['last_update_id'];
 
-    $userMsg = $bot['api']->getUpdates($offset);
+    $userMsg = $bot['api']->getUpdates($offset, 1, 50);
     var_dump($userMsg);
 
     if (isset($userMsg['result'][0]['message']['text'])) {
