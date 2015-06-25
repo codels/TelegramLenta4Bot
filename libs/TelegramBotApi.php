@@ -183,4 +183,10 @@ class TelegramBotApi
         }
         return static::query('getUserProfilePhotos', $options);
     }
+
+    public function setWebHook($url) {
+        return static::query('setWebhook', array(
+            'url' => $url
+        ));
+    }
 }

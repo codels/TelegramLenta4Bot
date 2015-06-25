@@ -3,6 +3,12 @@
 date_default_timezone_set('Europe/Moscow');
 mb_internal_encoding('UTF-8');
 
+// console version
+$isCLI = ( php_sapi_name() == 'cli' );
+if ($isCLI) {
+    set_time_limit(0);
+}
+
 require_once('libs/DB.php');
 require_once('libs/Encryption.php');
 require_once('libs/HttpQuery.php');
