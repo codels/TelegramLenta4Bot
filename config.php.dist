@@ -1,12 +1,15 @@
 <?php
+return array(
+    'debug' => false,
+    'secret_key' => 'this is secret key',
+    'chat_id' => 0,
 
-$debug = false;
-$secretKey = 'this is secret key';
-$chatId = 0;
-
-$dataBaseType = 'mysql';
-$dataBaseHost = '127.0.0.1';
-$dataBaseUser = 'root';
-$dataBasePassword = '';
-$dataBaseBaseName = 'data_base';
-$dataBaseEncode = 'utf8';
+    'data_base' => array(
+        'type' => 'mysql',
+        'host' => '127.0.0.1',
+        'user' => 'root',
+        'password' => '',
+        'base_name' => 'data_base',
+        'encode' => 'utf8'
+    )
+);
