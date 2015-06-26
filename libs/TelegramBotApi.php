@@ -6,16 +6,10 @@ require_once('Encryption.php');
 class TelegramBotApi
 {
     private $_token = null;
-    private $_info = null;
 
     public function __construct($info, $config)
     {
-        $this->_info = $info;
         $this->_token = Encryption::decrypt($info['token'], $config['secret_key']);
-    }
-
-    public function getInfo() {
-        return $this->_info;
     }
 
     public function query($command, $params = null) {

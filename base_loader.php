@@ -14,6 +14,7 @@ require_once('libs/DB.php');
 require_once('libs/Encryption.php');
 require_once('libs/HttpQuery.php');
 require_once('libs/TelegramBotApi.php');
+require_once('libs/TelegramBot.php');
 require_once('libs/VKApi.php');
 
 $config = include('config.php');
