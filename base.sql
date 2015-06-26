@@ -66,3 +66,8 @@ CREATE TABLE `subscribers` (
 -- ----------------------------
 -- Records of subscribers
 -- ----------------------------
+
+ALTER TABLE `resources`
+ADD COLUMN `bot_id`  bigint UNSIGNED NOT NULL DEFAULT 0 AFTER `id`;
+
+UPDATE `resources` SET `bot_id`='1' WHERE (`id`='1');

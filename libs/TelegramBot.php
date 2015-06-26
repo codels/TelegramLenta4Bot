@@ -32,6 +32,11 @@ class TelegramBot
         return $this->_info['last_update_id'];
     }
 
+    public function getId()
+    {
+        return $this->_info['id'];
+    }
+
     /**
      * @return null|TelegramBotApi
      */

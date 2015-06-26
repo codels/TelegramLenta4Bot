@@ -17,7 +17,7 @@ abstract class VKApi
         }
 
         $item = $item['response'][1];
-        var_dump($item);
+        //var_dump($item);
 
         $postId = $item['id'];
         $text = "Получено от: https://vk.com/oldlentach?w=wall-29534144_" . $postId . "\n\n";
@@ -52,9 +52,14 @@ abstract class VKApi
             if ($audio >= 1)
                 $text .= "Содержит аудиозаписи ($audio)\n";
         }
+        unset($item['attachments']);
+        var_dump($item);
 
         $text = preg_replace('/\<br(\s*)?\/?\>/i', PHP_EOL, $text);
-        return $text;
+        return array(
+            'text' => $text,
+            'date' => $item['date']
+        );
     }
 
     public static function getWallLastItemParsed($owner, $count) {
