@@ -71,3 +71,10 @@ ALTER TABLE `resources`
 ADD COLUMN `bot_id`  bigint UNSIGNED NOT NULL DEFAULT 0 AFTER `id`;
 
 UPDATE `resources` SET `bot_id`='1' WHERE (`id`='1');
+
+ALTER TABLE `resources`
+CHANGE COLUMN `subscribe_name` `name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `subscribe_type_id`,
+CHANGE COLUMN `subscribe_id` `id_in_resource`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL AFTER `name`,
+ADD COLUMN `name_in_resource`  varchar(255) NULL AFTER `id_in_resource`;
+
+UPDATE `resources` SET `name_in_resource`='oldlentach' WHERE (`id`='1');

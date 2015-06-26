@@ -62,14 +62,14 @@ class TelegramBot
         $availableResources = $statement->fetchAll(PDO::FETCH_ASSOC);
         $text = "Доступные ресурсы: \n";
         foreach ($availableResources as $key => $resource) {
-            $text .= $key + 1 . ". " . $resource['subscribe_name'] . "\n";
+            $text .= $key + 1 . ". " . $resource['name'] . "\n";
         }
         $this->_api->sendMessage($chatId, $text);
     }
 
     public function getResourceIdByName($name)
     {
-        $statement = $this->_db->getConnect()->prepare('SELECT `id` FROM `resources` WHERE `subscribe_name` = ?');
+        $statement = $this->_db->getConnect()->prepare('SELECT `id` FROM `resources` WHERE `name` = ?');
         if (!$statement->execute(array($name))) {
             throw new Exception('Sql query not executed');
         }

@@ -26,7 +26,7 @@ while(true) {
                 continue;
             }
             echo "start scan resource {$resource['id']}\n";
-            $result = VKApi::getWallLastItemParsed($resource['subscribe_id'], 1);
+            $result = VKApi::getWallLastItemParsed($resource['id_in_resource'], 1);
             if ($result['date'] != $resource['last_monitoring_info']) {
                 echo "resource {$resource['id']} send new message!!!\n";
                 // update last monitoring info

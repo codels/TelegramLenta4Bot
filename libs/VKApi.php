@@ -10,9 +10,9 @@ abstract class VKApi
         return HttpQuery::sendResultJson($url);
     }
 
-    public static function parseWallItem($item)
+    public static function parseWallItem($item, $owner)
     {
-        if (empty($item)) {
+        if (empty($item) || !isset($item['response'])) {
             return null;
         }
 
@@ -20,7 +20,7 @@ abstract class VKApi
         //var_dump($item);
 
         $postId = $item['id'];
-        $text = "Получено от: https://vk.com/oldlentach?w=wall-29534144_" . $postId . "\n\n";
+        $text = "Получено от: https://vk.com/wall-{$owner}_" . $postId . "\n\n";
 
         //Вставляем текст поста в сообщение, если он не умещается в превью. По каким признакам телеграм обрывает пост?
         if (trim(strlen($item['text']) > 120) || strpos($item['text'], "<br>") != false) {
@@ -64,6 +64,6 @@ abstract class VKApi
 
     public static function getWallLastItemParsed($owner, $count) {
         $item = static::getWallLastItem($owner, $count);
-        return static::parseWallItem($item);
+        return static::parseWallItem($item, $owner);
     }
 }
