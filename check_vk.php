@@ -27,11 +27,12 @@ while(true) {
             }
             echo "start scan resource {$resource['id']}\n";
             $result = VKApi::getWallLastItemParsed($resource['id_in_resource'], 1);
-            if ($result['date'] != $resource['last_monitoring_info']) {
+            var_dump(array(intval($result['date']), intval($resource['last_monitoring_info'])));
+            if (intval($result['date']) > intval($resource['last_monitoring_info'])) {
                 echo "resource {$resource['id']} send new message!!!\n";
                 // update last monitoring info
                 $statementUpdateLastMessageTime->execute(array($result['date'], $resource['id']));
-                $resource['last_monitoring_info'] = $result['date'];
+                $resource['last_monitoring_info'] = intval($result['date']);
 
                 // send message
                 $statementGetSubscribers->execute(array($resource['id']));
@@ -42,7 +43,7 @@ while(true) {
             }
         }
     }
-    echo "sleep 1 seconds\n";
-    sleep(1);
+    echo "sleep 5 seconds\n";
+    sleep(5);
 
 }
