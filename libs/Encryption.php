@@ -7,6 +7,11 @@ abstract class Encryption
         $encrypt = serialize($encrypt);
         $iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_DEV_URANDOM);
         $key = pack('H*', sprintf('%u', CRC32($key)));
+        //костыль
+        while (strlen($key) != 16) {
+            $key = $key . "\0";
+        }
+        //конец костыля
         $mac = hash_hmac('sha256', $encrypt, substr(bin2hex($key), -32));
         $passCrypt = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $key, $encrypt . $mac, MCRYPT_MODE_CBC, $iv);
         $encoded = base64_encode($passCrypt) . '|' . base64_encode($iv);
@@ -22,6 +27,11 @@ abstract class Encryption
             return false;
         }
         $key = pack('H*', sprintf('%u', CRC32($key)));
+        //костыль
+        while (strlen($key) != 16) {
+            $key = $key . "\0";
+        }
+        //конец костыля
         $decrypted = trim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $key, $decoded, MCRYPT_MODE_CBC, $iv));
         $mac = substr($decrypted, -64);
         $decrypted = substr($decrypted, 0, -64);
