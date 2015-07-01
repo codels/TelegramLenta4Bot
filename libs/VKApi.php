@@ -6,7 +6,7 @@ abstract class VKApi
 {
     public static function getWallLastItem($owner, $count)
     {
-        $url = "https://api.vk.com/method/wall.get?owner_id=-{$owner}&count={$count}";
+        $url = "https://api.vk.com/method/wall.get?owner_id=-{$owner}&count={$count}&filter=owner";
         return HttpQuery::sendResultJson($url);
     }
 
