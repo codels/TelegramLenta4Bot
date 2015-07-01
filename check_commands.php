@@ -41,24 +41,45 @@ while (true) {
         }
 
         if (isset($result['message']['text'])) {
+            $command = explode(' ', $result['message']['text']);
             // check commands
-            switch ($result['message']['text']) {
+            //TODO: мои ресурсы (мои подписки)
+            switch ($command[0]) {
                 case '/list':
                 case '/список': { //список доступных ресурсов
                     $bot->sendResourceList($chatId);
                     break;
                 }
                 case '/subscribe':
-                case '/подписка': { //подписка (пока без параметров)
-                    $bot->subscribeByResourceName($chatId, 'Lenta4');
+                case '/подписка': {
+                    if (isset($command[1])) {
+                        $bot->subscribeByResourceName($chatId, $command[1]);
+                    } else {
+                        $bot->getApi()->sendMessage($chatId,
+                            "Использование команды: /subscribe [название ресурса]\n
+                            Наберите /list, чтобы увидеть список доступных ресурсов");
+                    }
                     break;
                 }
-                case '/help':
+                case '/unsubscribe':
+                case '/отписка': {
+                    if (isset($command[1])) {
+                        $bot->unsubscribeByResourceName($chatId, $command[1]);
+                    } else {
+                        $bot->getApi()->sendMessage($chatId,
+                            "Использование команды: /unsubscribe [название ресурса]\n
+                            Наберите /list, чтобы увидеть список доступных ресурсов");
+                    }
+                    break;
+                }
+                case
+                '/help':
                 case '/помощь': {
                     $bot->getApi()->sendMessage($chatId,
                         "Вот список команд, которые я понимаю:\n
                     /list (/список) — Список доступных подписок
-                    /subscribe (/подписка) — подписаться
+                    /subscribe (/подписка) [название ресурса] — подписаться
+                    /unsubscribe (/отписка) [название ресурса] — отписка от ресурса
                     /about (/бот) — Обо мне
                     /help (/помощь) — Справка (вы ее читаете прямо сейчас!)");
                     break;

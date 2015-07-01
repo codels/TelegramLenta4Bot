@@ -111,9 +111,38 @@ class TelegramBot
     {
         $resourceId = $this->getResourceIdByName($resourceName);
         if (!$resourceId) {
-            $this->getApi()->sendMessage($chatId, "Произошла ошибка: Не найден ресурс для подписки.");
+            $this->getApi()->sendMessage($chatId, "Простите, но указанный ресурс не найден.
+                                            Воспользуйтесь командой /list, чтобы просмотреть список доступных ресурсов");
+        } else {
+            $this->subscribeByResourceId($chatId, $resourceId);
         }
-        $this->subscribeByResourceId($chatId, $resourceId);
+    }
+
+    public function unsubscribeByResourceName($chatId, $resourceName)
+    {
+        $resourceId = $this->getResourceIdByName($resourceName);
+        if (!$resourceId) {
+            $this->getApi()->sendMessage($chatId, "Простите, но указанный ресурс не найден.
+                                            Воспользуйтесь командой /list, чтобы просмотреть список доступных ресурсов");
+        } else {
+            $this->unsubscribeByResourceId($chatId, $resourceId);
+        }
+    }
+
+    public function unsubscribeByResourceId($chatId, $resourceId)
+    {
+        if ($this->checkExistsSubscribe($chatId, $resourceId)) {
+            //подписка
+            $statement = $this->_db->getConnect()->prepare('DELETE FROM `subscribers` WHERE `chat_id`=? AND `resource_id`=?;');
+            $statement->execute(array($chatId, $resourceId));
+            if ($statement->rowCount()) {
+                $this->getApi()->sendMessage($chatId, "Ваша подписка была успешно аннулирована!");
+            } else {
+                $this->getApi()->sendMessage($chatId, "Возникла ошибка при попытке отписаться!");
+            }
+        } else {
+            $this->getApi()->sendMessage($chatId, "Похоже, что вы не подписаны на этот ресурс, а значит и отписываться от него не надо :)");
+        }
     }
 
     public function checkExistsSubscribe($chatId, $resourceId)

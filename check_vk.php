@@ -11,7 +11,7 @@ $statementGetSubscribers = $db->getConnect()->prepare('SELECT * FROM `subscriber
 $statementGetAllResources->execute();
 $resources = $statementGetAllResources->fetchAll(PDO::FETCH_ASSOC);
 
-while(true) {
+while (true) {
     echo "start scan bots resource\n";
     foreach ($bots as $bot) {
         if (!($bot instanceof TelegramBot)) {
@@ -37,7 +37,7 @@ while(true) {
                 // send message
                 $statementGetSubscribers->execute(array($resource['id']));
                 $subscribers = $statementGetSubscribers->fetchAll(PDO::FETCH_ASSOC);
-                foreach($subscribers as $subscriber) {
+                foreach ($subscribers as $subscriber) {
                     $bot->getApi()->sendMessage($subscriber['chat_id'], $result['text']);
                 }
             }
