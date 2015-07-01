@@ -153,4 +153,13 @@ class TelegramBot
         }
         return $statement->rowCount() > 0;
     }
+
+    public function getUserSubscriptions($chatId)
+    {
+        $statement = $this->_db->getConnect()->prepare('SELECT * FROM `resources` AS `r`  INNER JOIN `subscribers` AS `s`
+                                                        ON r.id = s.resource_id
+                                                        WHERE r.bot_id = ? AND s.chat_id = ?');
+        $statement->execute(array($this->_info['id'], $chatId));
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

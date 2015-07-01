@@ -43,11 +43,25 @@ while (true) {
         if (isset($result['message']['text'])) {
             $command = explode(' ', $result['message']['text']);
             // check commands
-            //TODO: мои ресурсы (мои подписки)
             switch ($command[0]) {
                 case '/list':
                 case '/список': { //список доступных ресурсов
                     $bot->sendResourceList($chatId);
+                    break;
+                }
+                case '/my':
+                case '/мое': {
+                    $subscriptionsList = $bot->getUserSubscriptions($chatId);
+                    if (!empty($subscriptionsList)) {
+                        $text = "Ваши ресурсы: \n";
+                        foreach ($subscriptionsList as $key => $resource) {
+                            $text .= $key + 1 . ". " . $resource['name'] . "\n";
+                        }
+                        $bot->getApi()->sendMessage($chatId, $text);
+                    } else {
+                        $bot->getApi()->sendMessage($chatId,
+                            "Сейчас вы ни на что не подписаны");
+                    }
                     break;
                 }
                 case '/subscribe':
@@ -78,6 +92,7 @@ while (true) {
                     $bot->getApi()->sendMessage($chatId,
                         "Вот список команд, которые я понимаю:\n
                     /list (/список) — Список доступных подписок
+                    /my (/мое) — список ресурсов, на которые вы подписаны
                     /subscribe (/подписка) [название ресурса] — подписаться
                     /unsubscribe (/отписка) [название ресурса] — отписка от ресурса
                     /about (/бот) — Обо мне
